@@ -19,9 +19,11 @@ const parseQuestions = (data) => {
     var q = data[i];
 
     let correctAnswer = '';
+    let correctNum = 0;
     const correctChoices = q.Correct_answer_choice.replace(' ', '').split(',');
     for (const choice of correctChoices) {
       correctAnswer += q['Choice_' + choice + '_text'];
+      correctNum++;
     }
     
     var question = {
