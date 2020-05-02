@@ -83,7 +83,7 @@ function loadQuestion() {
   q.feedback = pickFeedback(q.qid);
   // console.log(quiz);
   $('#scene-question h2').text('Question ' + currentIndex);
-  $('#scene-question p').text(q.text + ' Select all that apply: ');
+  $('#scene-question .question').text(q.text + ' Select all that apply:');
   $('#scene-question .btn-continue').addClass('btn-disabled');
   $('#scene-question .select').empty();
   q.options.forEach(function(option, i) {
