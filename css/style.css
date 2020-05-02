@@ -1,4 +1,3 @@
-
 html {
   background: #f6f6f6;
   color: #262626;
@@ -16,7 +15,7 @@ header {
   text-align: center;
 }
 
-h1 {
+h1, h2 {
   font-family: 'Montserrat', sans-serif;
   font-size: 36px;
   color: #565656;
@@ -74,32 +73,6 @@ main {
   cursor: not-allowed;
   user-select: none;
 }
-.scene a i {
-  padding-right: 6px;
-}
-
-.scene .icon {
-  margin-bottom: 24px;
-}
-
-.scene .icon i {
-  height: 120px;
-  color: #7AC9C5;
-  font-size: 120px;
-}
-
-.scene .icon-alert i {
-  color: #F55760;
-}
-
-.scene h2 {
-  width: 540px;
-  margin-bottom: 36px;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 36px;
-  color: #565656;
-  text-align: center;
-}
 
 .scene p {
   width: 640px;
@@ -109,23 +82,28 @@ main {
   text-align: center;
 }
 
-.scene .small {
-  margin-bottom: 12px;
-  font-size: 10px;
-  font-style: italic;
-  line-height: 16px;
-  color: #888888;
+.scene .message {
+  font-size: 20px;
+  margin-bottom: 32px;
 }
 
-.scene .gallery {
-  display: flex;
-  flex-direction: row;
-  width: 640px;
-  height: 200px;
+.scene .question {
+  width: 740px;
+  background: #f6f6f6;
+  padding: 6px;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.scene .group {
+  flex-direction: column;
+  align-items: center;
+  width: 740px;
+  height: auto;
   margin-bottom: 24px;
 }
 
-.scene .gallery .frame {
+.scene .group .frame {
   width: 80%;
   height: 100%;
   margin: 0 12px;
@@ -133,20 +111,16 @@ main {
   box-sizing: border-box;
 }
 
-.scene .gallery .frame img {
-  height: 100%;
-}
-
-.scene .gallery .option {
+.scene .group .option {
   display: flex;
   cursor: pointer;
 }
 
-.scene .gallery .option-selected {
+.scene .group .option-selected {
   border: 3px solid #7d7d7d;
 }
 
-.scene .gallery .option p {
+.scene .group .option p {
   align-self: center;
   width: 100%;
   margin: 0;
@@ -154,38 +128,13 @@ main {
   box-sizing: border-box;
 }
 
-.scene .gallery .option p span {
+.scene .group .option p span {
   color: #7d7d7d;
 }
 
-.scene .gallery-v {
-  flex-direction: column;
-  align-items: center;
-  width: 740px;
-  height: auto;
-}
-
-.scene .gallery-v .frame {
+.scene .group .frame {
   width: 100%;
   margin: 3px 0;
-}
-
-.scene textarea {
-  width: 80%;
-  margin-bottom: 24px;
-  padding: 12px;
-  background: #FFFFFF;
-  color: #262626;
-  font-family: 'Open Sans', serif;
-  font-size: 16px;
-  line-height: 28px;
-  border: 3px solid #7d7d7d;
-  border-radius: 8px;
-  outline: 0;
-}
-
-.scene .action a {
-  display: inline-block;
 }
 
 .number {
