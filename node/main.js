@@ -41,21 +41,21 @@ function pickOptions(qid, correctNum) {
   var correctOptions = optionList[qid].correct.filter(function (x) {
     return !x.isUsedAsOption && !x.isUsedAsFeedback;
   });
+  
+  // Pick correct options
+    for (var i = 0; i < correctNum; i++) {
+      var op = correctOptions[i];
+      op.isUsedAsOption = true;
+      options[i] = op;
+    }
 
   // Pick incorrect options
   for (var i = 0; i < totalCount - correctNum; i++) {
     var op = incorrectOptions[i];
     op.isUsedAsOption = true;
-    options[i] = op;
+    options[i + correctNum] = op;
   }
   
-  // Pick correct options
-  for (var i = 0; i < correctNum; i++) {
-    var op = correctOptions[i];
-    op.isUsedAsOption = true;
-    options[i + incorrectCount] = op;
-  }
-
   // Shuffle options
   options.sort(function() {
     return Math.random() - 0.5;
