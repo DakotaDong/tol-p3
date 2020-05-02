@@ -1,6 +1,4 @@
-
-/* Data */
-
+/* Get questions & options */
 var questionList = [];
 var optionList = [];
 
@@ -16,10 +14,9 @@ function readJson(path, next) {
   });
 }
 
-/* Quiz */
-
+/* Generate quiz */
 var currentIndex = 0;
-
+// pick feedback that has not been used as choice and feedback before
 function pickFeedback(qid) {
   var feedback = '';
   for (var option of optionList[qid].correct) {
@@ -32,52 +29,53 @@ function pickFeedback(qid) {
   return feedback;
 }
 
-function pickOptions(qid, correctNum) {
+// pick choices that has not been used as choice and feedback before
+function pickOptions(qid) {
   var options = [];
-  var totalCount = 4;
   var incorrectOptions = optionList[qid].incorrect.filter(function (x) {
     return !x.isUsedAsOption;
   });
   var correctOptions = optionList[qid].correct.filter(function (x) {
     return !x.isUsedAsOption && !x.isUsedAsFeedback;
   });
-  
-  // Pick correct options
-    for (var i = 0; i < correctNum; i++) {
-      var op = correctOptions[i];
-      op.isUsedAsOption = true;
-      options[i] = op;
-    }
-
+  var totalCount = 4;
+  var incorrectCount = 0;
+  // Generate the number of incorrect options (ensure its number <= incorrectOptions.length)
+  do {
+    incorrectCount = Math.floor(Math.random() * Math.min(totalCount, incorrectOptions.length));
+  } while (incorrectCount + correctOptions.length < totalCount);
   // Pick incorrect options
-  for (var i = 0; i < totalCount - correctNum; i++) {
+  for (var i = 0; i < incorrectCount; i++) {
     var op = incorrectOptions[i];
     op.isUsedAsOption = true;
-    options[i + correctNum] = op;
+    options[i] = op;
   }
-  
+  // Pick correct options
+  for (var i = 0; i < totalCount - incorrectCount; i++) {
+    var op = correctOptions[i];
+    op.isUsedAsOption = true;
+    options[i + incorrectCount] = op;
+  }
   // Shuffle options
   options.sort(function() {
     return Math.random() - 0.5;
   });
-  // console.log('OPTIONS', options);
   return options;
 }
 
 function loadQuestion() {
-  console.log('LOAD Q' + (currentIndex + 1));
   var quiz = questionList;
   var q = quiz[currentIndex++];
-  q.options = pickOptions(q.qid, q.correctNum);
+  q.options = pickOptions(q.qid);
   q.feedback = pickFeedback(q.qid);
-  // console.log(quiz);
+  // update question
   $('#scene-question h2').text('Question ' + currentIndex);
-  $('#scene-question p').text(q.text + ' Select all that apply: ');
+  $('#scene-question .question').text(q.text + ' Select all that apply:');
   $('#scene-question .btn-continue').addClass('btn-disabled');
   $('#scene-question .select').empty();
+  // update options and feedback
   q.options.forEach(function(option, i) {
-    // console.log(option, i);
-    $('#scene-question .select').append(buildOption(option, i));
+    $('#scene-question .select').append(createOption(option, i));
     if (option.isCorrect) {
       $('#scene-correct p').text(q.feedback);
     } else {
@@ -86,7 +84,7 @@ function loadQuestion() {
   });
 }
 
-function buildOption(op, i) {
+function createOption(op, i) {
   var correct = op.isCorrect ? '1' : '0';
   var nums = ['A', 'B', 'C', 'D'];
   var num = nums[i];
@@ -95,16 +93,15 @@ function buildOption(op, i) {
   </div>';
 }
 
-/* Score */
+/* Show scenes */
 
 var correctCount = 0;
-var remainCount = 2;
+var remainCount = 1;
 
 function displayResult() {
   $('.count-correct').text(correctCount);
   $('.count-total').text(questionList.length);
   $('.count-remain').text(remainCount);
-
   if (remainCount <= 0) {
     $('.btn-retake').addClass('btn-disabled');
   }
@@ -117,8 +114,6 @@ function retake() {
   remainCount--;
 }
 
-/* Scene */
-
 function hideBoard() {
   $('.scene').hide();
   $('#board').hide();
@@ -128,7 +123,6 @@ function showBoard(scene) {
   $('#board').show();
   showScene(scene);
 }
-
 function continueScene(el) {
   var next = $(el).data('next');
   console.log(next);
@@ -155,8 +149,7 @@ function showScene(target, prep) {
   }
 }
 
-/* Event */
-
+/* Quiz generator */
 function registerEvents() {
   $('.btn-retake').click(function () {
     if (!$(this).hasClass('btn-disabled')) {
@@ -198,14 +191,6 @@ function registerEvents() {
       showScene('#scene-question', loadQuestion);
     }
   })
-  $('.btn-share').click(function () {
-    var url = "https://polarischen.github.io/tol-quiz/";
-    var text = "Have you taken a data-driven quiz? Check this out! 😏";
-    var twitterWindow = window.open('https://twitter.com/share?url=' + url + '&text=' + text, 'twitter-popup', 'height=350, width=600');
-    if (twitterWindow.focus) {
-      twitterWindow.focus();
-    }
-  })
   $('.select').on('click', '.option', function () {
     var $select = $(this).parent('.select');
     if (!$select.hasClass('select-disabled')) {
@@ -231,7 +216,7 @@ function registerEvents() {
 $(document).ready(function () {
   registerEvents();
   showBoard('#scene-start');
-
+  // read json files
   readJson('data/questions.json', function(questions) {
     questionList = questions;
     readJson('data/options.json', function(options) {
