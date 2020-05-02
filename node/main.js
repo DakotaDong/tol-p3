@@ -68,7 +68,7 @@ function loadQuestion() {
   console.log('LOAD Q' + (currentIndex + 1));
   var quiz = questionList;
   var q = quiz[currentIndex++];
-  q.options = pickOptions(q.qid);
+  q.options = pickOptions(q.qid, q.correctNum);
   q.feedback = pickFeedback(q.qid);
   // console.log(quiz);
   $('#scene-question h2').text('Question ' + currentIndex);
