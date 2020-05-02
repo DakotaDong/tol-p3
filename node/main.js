@@ -83,9 +83,9 @@ function loadQuestion() {
   q.options.forEach(function(option, i) {
     $('#scene-question .select').append(createOption(option, i));
     if (option.isCorrect) {
-      $('#scene-correct p').text(q.feedback);
+      $('#scene-correct p').text(' Key(s): ' + q.feedback);
     } else {
-      $('#scene-wrong p').text(q.feedback);
+      $('#scene-wrong p').text(' Key(s): ' + q.feedback);
     }
   });
 }
@@ -100,7 +100,6 @@ function createOption(op, i) {
 }
 
 /* Show scenes */
-
 var correctCount = 0;
 var remainCount = 1;
 
