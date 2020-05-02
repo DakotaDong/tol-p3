@@ -1,7 +1,6 @@
 
 const csvToJson = require('csvtojson');
 const fs = require('fs');
-const keyword = require('./keyword');
 
 let questionList = [];
 let optionList = {};
@@ -29,6 +28,7 @@ const parseQuestions = (data) => {
       qid: q.Question_id,
       text: q.Question_text,
       correctAnswer: correctAnswer,
+      correctNum: correctNum,
       options: []
     }
     questionList.push(question);
@@ -61,7 +61,6 @@ const parseOptions = (data) => {
       quizScore: Number(o.Quiz_score),
       avgScore: Number(o.Average_quizzes_score),
       irtCorrectness: 0.0, // Default, calculate later in calculateIRTCorrectness
-      keywordMatchness: 0.0 // Default, calculate later in calculateKeywordMatchness
     }
     optionList[qid].push(option);
     difficultyList[qid] += option.score;
@@ -89,7 +88,6 @@ const parseOptions = (data) => {
       var op = options[j];
       analyzeOption(op, quizScoreList[i], avgScoreList[i]);
       calculateIRTCorrectness(op, difficultyList[i]);
-      calculateKeywordMatchness(op);
     }
   }
 
@@ -126,12 +124,6 @@ const calculateIRTCorrectness = (option, difficulty) => {
   option.irtCorrectness = Math.exp(ability - difficulty) / (1 + Math.exp(ability - difficulty));
 };
 
-const calculateKeywordMatchness = (option) => {
-  // Use keywords and their synonyms to calculate matchness
-  const correctAnswer = questionList.find(q => q.qid === option.qid).correctAnswer;
-  option.keywordMatchness = keyword.calculateMatch(correctAnswer, option.text);
-};
-
 const exportToJson = (data, path) => {
   fs.writeFile(path, data, 'utf8', (err) => {
     if (err) throw err;
@@ -146,10 +138,9 @@ const sortOptions = () => {
       incorrect: []
     };
     options = options.sort((a, b) => {
-      return b.keywordMatchness - a.keywordMatchness || b.irtCorrectness - a.irtCorrectness;
+      return b.irtCorrectness - a.irtCorrectness;
     });
     for (const option of options) {
-      // console.log(option.irtCorrectness, option.keywordMatchness, option.isUseful, option.isCorrect);
       if (option.isUseful) {
         if (option.isCorrect) {
           optionList[i].correct.push(option);
