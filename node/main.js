@@ -29,10 +29,7 @@ function pickFeedback(qid) {
   return feedback;
 }
 
-<<<<<<< HEAD
 // pick choices that has not been used as choice and feedback before
-=======
->>>>>>> b4f7e32ab703fbb5dcf370986d8ccede77f79cb1
 function pickOptions(qid) {
   var options = [];
   var incorrectOptions = optionList[qid].incorrect.filter(function (x) {
@@ -41,33 +38,17 @@ function pickOptions(qid) {
   var correctOptions = optionList[qid].correct.filter(function (x) {
     return !x.isUsedAsOption && !x.isUsedAsFeedback;
   });
-<<<<<<< HEAD
   var totalCount = 4;
   var incorrectCount = 0;
   // Generate the number of incorrect options (ensure its number <= incorrectOptions.length)
   do {
     incorrectCount = Math.floor(Math.random() * Math.min(totalCount, incorrectOptions.length));
   } while (incorrectCount + correctOptions.length < totalCount);
-=======
-
-  console.log('io', incorrectOptions.length);
-  console.log('co', correctOptions.length);
-
-  var totalCount = 4;
-  var incorrectCount = 0;
-  do {
-    incorrectCount = Math.floor(Math.random() * Math.min(totalCount, incorrectOptions.length));
-    console.log('ic', incorrectCount);
-    console.log('cc', totalCount-incorrectCount);
-  } while (incorrectCount + correctOptions.length < totalCount);
-
->>>>>>> b4f7e32ab703fbb5dcf370986d8ccede77f79cb1
   // Pick incorrect options
   for (var i = 0; i < incorrectCount; i++) {
     var op = incorrectOptions[i];
     op.isUsedAsOption = true;
     options[i] = op;
-<<<<<<< HEAD
   }
   // Pick correct options
   for (var i = 0; i < totalCount - incorrectCount; i++) {
@@ -75,26 +56,16 @@ function pickOptions(qid) {
     op.isUsedAsOption = true;
     options[i + incorrectCount] = op;
   }
-=======
-  }
-  
   // Pick correct options
   for (var i = 0; i < totalCount - incorrectCount; i++) {
     var op = correctOptions[i];
     op.isUsedAsOption = true;
     options[i + incorrectCount] = op;
   }
-
->>>>>>> b4f7e32ab703fbb5dcf370986d8ccede77f79cb1
   // Shuffle options
   options.sort(function() {
     return Math.random() - 0.5;
   });
-<<<<<<< HEAD
-=======
-  console.log('OPTIONS', options);
-
->>>>>>> b4f7e32ab703fbb5dcf370986d8ccede77f79cb1
   return options;
 }
 
@@ -133,22 +104,6 @@ function createOption(op, i) {
 var correctCount = 0;
 var remainCount = 1;
 
-function displayResult() {
-  $('.count-correct').text(correctCount);
-  $('.count-total').text(questionList.length);
-  $('.count-remain').text(remainCount);
-  if (remainCount <= 0) {
-    $('.btn-retake').addClass('btn-disabled');
-  }
-}
-
-function retake() {
-  correctCount = 0;
-  currentIndex = 0;
-  showScene('#scene-question', loadQuestion);
-  remainCount--;
-}
-
 function hideBoard() {
   $('.scene').hide();
   $('#board').hide();
@@ -182,6 +137,20 @@ function showScene(target, prep) {
       $(target).fadeIn();
     });
   }
+}
+function displayResult() {
+  $('.count-correct').text(correctCount);
+  $('.count-total').text(questionList.length);
+  $('.count-remain').text(remainCount);
+  if (remainCount <= 0) {
+    $('.btn-retake').addClass('btn-disabled');
+  }
+}
+function retake() {
+  correctCount = 0;
+  currentIndex = 0;
+  showScene('#scene-question', loadQuestion);
+  remainCount--;
 }
 
 /* Quiz generator */
