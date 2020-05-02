@@ -32,35 +32,46 @@ function pickFeedback(qid) {
   return feedback;
 }
 
-function pickOptions(qid, correctNum) {
+function pickOptions(qid) {
   var options = [];
-  var totalCount = 4;
   var incorrectOptions = optionList[qid].incorrect.filter(function (x) {
     return !x.isUsedAsOption;
   });
   var correctOptions = optionList[qid].correct.filter(function (x) {
     return !x.isUsedAsOption && !x.isUsedAsFeedback;
   });
-  
-  // Pick correct options
-    for (var i = 0; i < correctNum; i++) {
-      var op = correctOptions[i];
-      op.isUsedAsOption = true;
-      options[i] = op;
-    }
+
+  console.log('io', incorrectOptions.length);
+  console.log('co', correctOptions.length);
+
+  var totalCount = 4;
+  var incorrectCount = 0;
+  do {
+    incorrectCount = Math.floor(Math.random() * Math.min(totalCount, incorrectOptions.length));
+    console.log('ic', incorrectCount);
+    console.log('cc', totalCount-incorrectCount);
+  } while (incorrectCount + correctOptions.length < totalCount);
 
   // Pick incorrect options
-  for (var i = 0; i < totalCount - correctNum; i++) {
+  for (var i = 0; i < incorrectCount; i++) {
     var op = incorrectOptions[i];
     op.isUsedAsOption = true;
-    options[i + correctNum] = op;
+    options[i] = op;
   }
   
+  // Pick correct options
+  for (var i = 0; i < totalCount - incorrectCount; i++) {
+    var op = correctOptions[i];
+    op.isUsedAsOption = true;
+    options[i + incorrectCount] = op;
+  }
+
   // Shuffle options
   options.sort(function() {
     return Math.random() - 0.5;
   });
-  // console.log('OPTIONS', options);
+  console.log('OPTIONS', options);
+
   return options;
 }
 
@@ -68,7 +79,7 @@ function loadQuestion() {
   console.log('LOAD Q' + (currentIndex + 1));
   var quiz = questionList;
   var q = quiz[currentIndex++];
-  q.options = pickOptions(q.qid, q.correctNum);
+  q.options = pickOptions(q.qid);
   q.feedback = pickFeedback(q.qid);
   // console.log(quiz);
   $('#scene-question h2').text('Question ' + currentIndex);
@@ -98,7 +109,7 @@ function buildOption(op, i) {
 /* Score */
 
 var correctCount = 0;
-var remainCount = 2;
+var remainCount = 1;
 
 function displayResult() {
   $('.count-correct').text(correctCount);
