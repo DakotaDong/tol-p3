@@ -32,8 +32,9 @@ function pickFeedback(qid) {
   return feedback;
 }
 
-function pickOptions(qid) {
+function pickOptions(qid, correctNum) {
   var options = [];
+  var totalCount = 4;
   var incorrectOptions = optionList[qid].incorrect.filter(function (x) {
     return !x.isUsedAsOption;
   });
@@ -41,26 +42,15 @@ function pickOptions(qid) {
     return !x.isUsedAsOption && !x.isUsedAsFeedback;
   });
 
-  console.log('io', incorrectOptions.length);
-  console.log('co', correctOptions.length);
-
-  var totalCount = 4;
-  var incorrectCount = 0;
-  do {
-    incorrectCount = Math.floor(Math.random() * Math.min(totalCount, incorrectOptions.length));
-    console.log('ic', incorrectCount);
-    console.log('cc', totalCount-incorrectCount);
-  } while (incorrectCount + correctOptions.length < totalCount);
-
   // Pick incorrect options
-  for (var i = 0; i < incorrectCount; i++) {
+  for (var i = 0; i < totalCount - correctNum; i++) {
     var op = incorrectOptions[i];
     op.isUsedAsOption = true;
     options[i] = op;
   }
   
   // Pick correct options
-  for (var i = 0; i < totalCount - incorrectCount; i++) {
+  for (var i = 0; i < correctNum; i++) {
     var op = correctOptions[i];
     op.isUsedAsOption = true;
     options[i + incorrectCount] = op;
@@ -70,8 +60,7 @@ function pickOptions(qid) {
   options.sort(function() {
     return Math.random() - 0.5;
   });
-  console.log('OPTIONS', options);
-
+  // console.log('OPTIONS', options);
   return options;
 }
 
@@ -235,14 +224,6 @@ function registerEvents() {
         var $btnTarget = $(target).children('a');
         $btnTarget.data('next', next);
       }
-    }
-  })
-  $('.input-answer').on('change keyup paste', function () {
-    var $btn = $(this).parent('.scene').find('.btn-continue');
-    if ($(this).val().length === 0) {
-      $btn.addClass('btn-disabled');
-    } else {
-      $btn.removeClass('btn-disabled');
     }
   })
 }
