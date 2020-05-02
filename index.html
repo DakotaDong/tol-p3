@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Data-driven Quiz</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico|Open+Sans:300">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <h1>Data-driven Quiz</h1>
+      </header>
+
+      <main>
+        <div id="board">
+          <div id="scene-start" class="scene">
+            <div class="icon">
+              <i class="far fa-file-alt"></i>
+            </div>
+            <h2>Are You Ready?</h2>
+            <p>Click start to test your learning!</p>
+            <a class="btn-continue" data-next="#scene-question"><i class="fas fa-play-circle"></i>Start</a>
+          </div>
+
+          <div id="scene-end" class="scene">
+            <div class="icon">
+              <i class="fas fa-glass-cheers"></i>
+            </div>
+            <h2>Good job!</h2>
+            <p>You answered <span class="number count-correct">4</span>/<span class="number count-total">4</span> correctly!<br>You still have <span class="number count-remain">3</span> chances to test your learning again!</p>
+            <div class="actions">
+              <a class="btn-retake"><i class="fas fa-redo"></i>Retake</a>
+            </div>
+          </div>
+
+          <div id="scene-question" class="scene scene-question">
+            <h2>Question 1</h2>
+            <p>test</p>
+            <div class="gallery gallery-v select">
+              <div class="frame option" data-correct="1">
+                <p>A. t1</p>
+              </div>
+              <div class="frame option" data-correct="1">
+                <p>A. t1</p>
+              </div>
+              <div class="frame option" data-correct="1">
+                <p>A. t1</p>
+              </div>
+              <div class="frame option" data-correct="0">
+                <p>A. t1</p>
+              </div>
+            </div>
+            <a class="btn-select-option btn-disabled"><i class="fas fa-arrow-circle-right"></i>Continue</a>
+          </div>
+
+          <div id="scene-correct" class="scene scene-feedback">
+            <div class="icon">
+              <i class="far fa-check-circle"></i>
+            </div>
+            <h2>Correct!</h2>
+            <p>Yes.</p>
+            <a class="btn-next-question" data-next="#scene-end"><i class="fas fa-arrow-circle-right"></i>Continue</a>
+          </div>
+
+          <div id="scene-wrong" class="scene scene-feedback">
+            <div class="icon icon-alert">
+              <i class="far fa-times-circle"></i>
+            </div>
+            <h2>Incorrect</h2>
+            <p>No.</p>
+            <a class="btn-next-question" data-next="#scene-end"><i class="fas fa-arrow-circle-right"></i>Continue</a>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p class="copyright">&copy; 2020. Created by Ziqi Dong, Jialu Li, Yicheng Jiang</p>
+      </footer>
+    </div>
+
+    <script type="text/javascript" src="node/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="node/main.js"></script>
+  </body>
+</html>
