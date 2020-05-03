@@ -56,12 +56,6 @@ function pickOptions(qid) {
     op.isUsedAsOption = true;
     options[i + incorrectCount] = op;
   }
-  // Pick correct options
-  for (var i = 0; i < totalCount - incorrectCount; i++) {
-    var op = correctOptions[i];
-    op.isUsedAsOption = true;
-    options[i + incorrectCount] = op;
-  }
   // Shuffle options
   options.sort(function() {
     return Math.random() - 0.5;
